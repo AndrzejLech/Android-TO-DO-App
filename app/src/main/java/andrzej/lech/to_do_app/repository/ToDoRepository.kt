@@ -27,6 +27,10 @@ class ToDoRepository {
         toDoDao = toDoDatabase?.toDoDao()
     }
 
+    fun getIsLoading(): MutableLiveData<Boolean> {
+        return isLoading
+    }
+
     fun getAllToDos(): Flowable<List<ToDo>>? {
         return toDoDao?.getAllToDos()
     }

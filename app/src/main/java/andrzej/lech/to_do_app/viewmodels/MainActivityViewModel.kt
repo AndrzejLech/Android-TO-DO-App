@@ -12,29 +12,24 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
 
     private val toDoRepository = ToDoRepository()
 
-    //Get all Party
     fun getAllToDos(): Flowable<List<ToDo>>? {
         return toDoRepository.getAllToDos()
     }
 
-    //Get Loading State
-    fun getIsLoading(): MutableLiveData<Boolean?>? {
-        return toDoRepository.isLoading.value as MutableLiveData<Boolean?>?
+    fun getIsLoading(): MutableLiveData<Boolean> {
+        return toDoRepository.getIsLoading()
     }
 
-    //Insert Party
-    fun insert(party: Party?) {
-        partyRepository.insertParty(party)
+    fun insertToDo(toDo: ToDo) {
+        toDoRepository.insertToDo(toDo)
     }
 
-    //Update Party
-    fun updateParty(party: Party?) {
-        partyRepository.updateParty(party)
+    fun updateToDo(toDo: ToDo) {
+    toDoRepository.updateToDo(toDo)
     }
 
-    //Delete Party
-    fun deleteParty(party: Party?) {
-        partyRepository.deleteParty(party)
+    fun deleteToDo(toDo: ToDo) {
+    toDoRepository.deleteToDo(toDo)
     }
 
 }
