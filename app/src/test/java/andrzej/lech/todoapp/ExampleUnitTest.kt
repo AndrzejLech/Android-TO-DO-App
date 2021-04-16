@@ -1,4 +1,4 @@
-package andrzej.lech.to_do_app
+package andrzej.lech.todoapp
 
 import org.junit.Test
 

@@ -1,22 +1,24 @@
-package andrzej.lech.to_do_app.models
+package andrzej.lech.todoapp.models
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.util.concurrent.TimeUnit
 
-@Entity(tableName = "todo_table")
-data class ToDo(
+@Entity(tableName = "task_table")
+class Task(title: String, description: String) {
+
     @PrimaryKey(autoGenerate = true)
-    private var uid: Int
-) {
-
-    private var title: String = ""
-    private var description: String = ""
-    private var timestamp: String = (System.currentTimeMillis() / 1000).toString()
+    private var uid: Int = 0
+    private var title: String
+    private var description: String
     private var state: Boolean = false
+    private var timestamp: String
 
-    constructor(title: String, description: String) : this(0) {
+    init {
         this.title = title
         this.description = description
+        this.state = false
+        this.timestamp = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()).toString()
     }
 
     fun setUid(uid: Int) {
@@ -43,6 +45,10 @@ data class ToDo(
         return this.description
     }
 
+    fun setTimestamp(timestamp: String) {
+        this.timestamp = timestamp
+    }
+
     fun getTimestamp(): String {
         return timestamp
     }
@@ -54,5 +60,5 @@ data class ToDo(
     fun getState(): Boolean {
         return state
     }
-}
 
+}
