@@ -24,15 +24,15 @@ class CreateTaskDialog : AppCompatDialogFragment() {
 
         val builder = MaterialAlertDialogBuilder(requireActivity())
         val inflater: LayoutInflater = activity!!.layoutInflater
-        val view: View = inflater.inflate(R.layout.dialog_task, null)
+        val view: View = inflater.inflate(R.layout.dialog_create_task, null)
 
         builder.setView(view)
         builder.setCancelable(true)
         builder.setTitle(null)
 
-        mTitle = view.findViewById(R.id.dialogTaskTitle)
-        mDescription = view.findViewById(R.id.dialogTaskDescription)
-        mSaveButton = view.findViewById(R.id.dialogSaveButton)
+        mTitle = view.findViewById(R.id.dialogCreateTaskTitle)
+        mDescription = view.findViewById(R.id.dialogCreateTaskDescription)
+        mSaveButton = view.findViewById(R.id.dialogCreateTaskSaveButton)
 
         mSaveButton.setOnClickListener {
                 val taskTitle = mTitle.text.toString()

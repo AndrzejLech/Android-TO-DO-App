@@ -16,7 +16,6 @@ import io.reactivex.schedulers.Schedulers
 
 
 class TaskRepository(application: Application) {
-
     private val TAG = "TaskRepository"
     var taskDao: TaskDao
 
@@ -89,5 +88,4 @@ class TaskRepository(application: Application) {
                 }
             })
     }
-
 }

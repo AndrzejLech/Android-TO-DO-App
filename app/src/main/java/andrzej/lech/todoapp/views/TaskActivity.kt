@@ -1,7 +1,6 @@
 package andrzej.lech.todoapp.views
 
 import android.content.Intent
-import android.graphics.Canvas
 import android.os.Bundle
 import android.util.Log
 import android.widget.CheckBox
@@ -21,7 +20,9 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
-class TaskActivity : AppCompatActivity(), CreateTaskDialog.CreateTaskListener,
+class TaskActivity : AppCompatActivity(),
+    CreateTaskDialog.CreateTaskListener,
+    DeleteTaskDialog.DeleteTaskListener,
     TaskAdapter.OnTaskClickListener {
 
     private val tag: String = "MainActivity_TAG"
@@ -35,10 +36,8 @@ class TaskActivity : AppCompatActivity(), CreateTaskDialog.CreateTaskListener,
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_task)
-
         val fab: FloatingActionButton = findViewById(R.id.fab)
         mRecyclerView = findViewById(R.id.taskRecycler)
-
         val linearLayoutManager = LinearLayoutManager(this)
         mRecyclerView.layoutManager = linearLayoutManager
         mRecyclerView.setHasFixedSize(true)
@@ -60,9 +59,10 @@ class TaskActivity : AppCompatActivity(), CreateTaskDialog.CreateTaskListener,
             openCreateTaskDialog()
         }
 
+
         ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
             0,
-            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+            ItemTouchHelper.LEFT
         ) {
 
             override fun onMove(
@@ -75,11 +75,34 @@ class TaskActivity : AppCompatActivity(), CreateTaskDialog.CreateTaskListener,
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 taskAdapter.getTaskAt(viewHolder.layoutPosition).let {
-                    taskActivityViewModel.deleteTask(it)
+                    if (!it.getState()) {
+                        openDeleteTaskDialog(it)
+                        taskAdapter.notifyDataSetChanged()
+                    } else {
+                        taskActivityViewModel.deleteTask(it)
+                    }
                 }
             }
         }).attachToRecyclerView(mRecyclerView)
 
+        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+            override fun onMove(
+                @NonNull recyclerView: RecyclerView,
+                @NonNull viewHolder: RecyclerView.ViewHolder,
+                @NonNull target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                taskAdapter.getTaskAt(viewHolder.layoutPosition).let {
+                    it.setState(!it.getState())
+                    taskActivityViewModel.updateTask(it)
+                    taskAdapter.notifyDataSetChanged()
+                }
+            }
+        }).attachToRecyclerView(mRecyclerView)
     }
 
     private fun setDataToRecyclerView(tasks: List<Task>) {
@@ -93,9 +116,19 @@ class TaskActivity : AppCompatActivity(), CreateTaskDialog.CreateTaskListener,
         createPartyDialog.show(supportFragmentManager, "create dialog")
     }
 
+    private fun openDeleteTaskDialog(task: Task) {
+        val deleteTaskDialog = DeleteTaskDialog(task)
+        deleteTaskDialog.show(supportFragmentManager, "delete dialog")
+    }
+
     override fun saveNewTask(task: Task) {
         Log.d(tag, "saveNewTask: " + task.getTitle())
         taskActivityViewModel.insertTask(task)
+    }
+
+    override fun deleteTask(task: Task) {
+        Log.d(tag, "DeleteTask: " + task.getTitle())
+        taskActivityViewModel.deleteTask(task)
     }
 
     override fun onDestroy() {
@@ -109,7 +142,7 @@ class TaskActivity : AppCompatActivity(), CreateTaskDialog.CreateTaskListener,
     }
 
     private fun moveToDetailsActivity(task: Task) {
-        val intent = Intent(this@TaskActivity, DetailActivity::class.java )
+        val intent = Intent(this@TaskActivity, DetailActivity::class.java)
 
         intent.putExtra("title", task.getTitle())
         intent.putExtra("description", task.getDescription())
@@ -118,6 +151,4 @@ class TaskActivity : AppCompatActivity(), CreateTaskDialog.CreateTaskListener,
 
         startActivity(intent)
     }
-
-
 }

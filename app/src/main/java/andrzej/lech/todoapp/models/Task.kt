@@ -2,6 +2,7 @@ package andrzej.lech.todoapp.models
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 @Entity(tableName = "task_table")
@@ -18,7 +19,7 @@ class Task(title: String, description: String) {
         this.title = title
         this.description = description
         this.state = false
-        this.timestamp = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()).toString()
+        this.timestamp = Calendar.getInstance().time.toString()
     }
 
     fun setUid(uid: Int) {
@@ -31,14 +32,6 @@ class Task(title: String, description: String) {
 
     fun getTitle(): String {
         return this.title
-    }
-
-    fun setTitle(title: String) {
-        this.title = title
-    }
-
-    fun setDescription(description: String) {
-        this.description = description
     }
 
     fun getDescription(): String {
@@ -60,5 +53,4 @@ class Task(title: String, description: String) {
     fun getState(): Boolean {
         return state
     }
-
 }

@@ -3,10 +3,10 @@
 
     <string name="item_title">item_title</string>
 
-    <string name="task_dialog_title">Create new task</string>
-    <string name="task_dialog_title_hint">Enter your tasks title</string>
-    <string name="task_dialog_description_hint">Enter your tasks description</string>
-    <string name="task_dialog_button">Save</string>
+    <string name="task_create_dialog_title">Create new task</string>
+    <string name="task_create_dialog_title_hint">Enter your tasks title</string>
+    <string name="task_create_dialog_description_hint">Enter your tasks description</string>
+    <string name="task_create_dialog_save_button">Save</string>
 
     <string name="details_title">task_name</string>
     <string name="details_timestamp">task_timestamp</string>
@@ -14,4 +14,8 @@
     <string name="details_status_value">task_status_value</string>
     <string name="details_description">task_description</string>
 
+    <string name="task_delete_dialog_yes_button">Yes</string>
+    <string name="task_delete_dialog_no_button">No</string>
+    <string name="task_delete_dialog_text_1">This task isn\'t completed yet.</string>
+    <string name="task_delete_dialog_text_2">Are you sure you want to delete it?</string>
 </resources>

@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.NonNull
 import androidx.cardview.widget.CardView
@@ -26,14 +27,15 @@ class TaskAdapter(taskList: List<Task>) : RecyclerView.Adapter<TaskAdapter.Adapt
 
     @NonNull
     override fun onCreateViewHolder(@NonNull parent: ViewGroup, viewType: Int): AdapterViewHolder {
-        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.item_task, parent, false)
+        val view: View =
+            LayoutInflater.from(parent.context).inflate(R.layout.item_task, parent, false)
         return AdapterViewHolder(view, onTaskClickListener)
     }
 
     override fun onBindViewHolder(holder: AdapterViewHolder, position: Int) {
         val singleTask: Task = taskList[position]
         holder.mTitle.text = singleTask.getTitle()
-        holder.mState.isChecked = singleTask.getState()
+        holder.state(singleTask.getState())
     }
 
     fun getTaskAt(position: Int): Task {
@@ -46,25 +48,36 @@ class TaskAdapter(taskList: List<Task>) : RecyclerView.Adapter<TaskAdapter.Adapt
         return taskList.size
     }
 
-   inner class AdapterViewHolder(@NonNull itemView: View, onTaskClickListener: OnTaskClickListener) :
+    inner class AdapterViewHolder(
+        @NonNull itemView: View,
+        onTaskClickListener: OnTaskClickListener
+    ) :
         RecyclerView.ViewHolder(itemView), View.OnClickListener {
         val mTitle: TextView
-        val mState: CheckBox
+        val mState: ImageView
         val mCardView: CardView
         var onTaskClickListener: OnTaskClickListener
 
         init {
             this.onTaskClickListener = onTaskClickListener
             mTitle = itemView.findViewById(R.id.itemTaskTitle)
-            mState = itemView.findViewById(R.id.itemTaskStateCheckBox)
+            mState = itemView.findViewById(R.id.itemTaskState)
             mCardView = itemView.findViewById(R.id.cardView)
             mCardView.setOnClickListener(this)
         }
 
         override fun onClick(v: View) {
-            val position: Int = adapterPosition
+            val position: Int = layoutPosition
             val currentTask = taskList[position]
             onTaskClickListener.onTaskClick(currentTask)
+        }
+
+        fun state(boolean: Boolean) {
+            return if (boolean) {
+                mState.visibility = View.VISIBLE
+            } else {
+                mState.visibility = View.INVISIBLE
+            }
         }
     }
 
