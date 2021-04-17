@@ -39,7 +39,6 @@
                 android:layout_height="36dp"
                 android:visibility="visible"
                 app:srcCompat="@drawable/ic_baseline_check_24" />
-
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>

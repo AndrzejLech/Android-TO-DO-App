@@ -3,7 +3,6 @@ package andrzej.lech.todoapp.views
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.CheckBox
 import androidx.annotation.NonNull
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -11,6 +10,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import andrzej.lech.todoapp.R
+import andrzej.lech.todoapp.adapter.OnTaskClickListener
 import andrzej.lech.todoapp.adapter.TaskAdapter
 import andrzej.lech.todoapp.models.Task
 import andrzej.lech.todoapp.viewmodels.TaskActivityViewModel
@@ -21,12 +21,10 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
 class TaskActivity : AppCompatActivity(),
-    CreateTaskDialog.CreateTaskListener,
+    CreateTaskListener,
     DeleteTaskDialog.DeleteTaskListener,
-    TaskAdapter.OnTaskClickListener {
-
+    OnTaskClickListener {
     private val tag: String = "MainActivity_TAG"
-
     lateinit var taskActivityViewModel: TaskActivityViewModel
     var compositeDisposable: CompositeDisposable = CompositeDisposable()
     lateinit var mRecyclerView: RecyclerView
@@ -36,12 +34,11 @@ class TaskActivity : AppCompatActivity(),
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_task)
+        val linearLayoutManager = LinearLayoutManager(this)
         val fab: FloatingActionButton = findViewById(R.id.fab)
         mRecyclerView = findViewById(R.id.taskRecycler)
-        val linearLayoutManager = LinearLayoutManager(this)
         mRecyclerView.layoutManager = linearLayoutManager
         mRecyclerView.setHasFixedSize(true)
-
         taskActivityViewModel = ViewModelProvider(this).get(TaskActivityViewModel::class.java)
 
         val disposable: Disposable = taskActivityViewModel.getAllTask().subscribeOn(Schedulers.io())
@@ -59,12 +56,10 @@ class TaskActivity : AppCompatActivity(),
             openCreateTaskDialog()
         }
 
-
         ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
             0,
             ItemTouchHelper.LEFT
         ) {
-
             override fun onMove(
                 @NonNull recyclerView: RecyclerView,
                 @NonNull viewHolder: RecyclerView.ViewHolder,
@@ -94,7 +89,6 @@ class TaskActivity : AppCompatActivity(),
                 return false
             }
 
-
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 taskAdapter.getTaskAt(viewHolder.layoutPosition).let {
                     it.setState(!it.getState())
@@ -103,22 +97,6 @@ class TaskActivity : AppCompatActivity(),
                 }
             }
         }).attachToRecyclerView(mRecyclerView)
-    }
-
-    private fun setDataToRecyclerView(tasks: List<Task>) {
-        taskAdapter = TaskAdapter(tasks)
-        taskAdapter.setItemClickListener(this)
-        mRecyclerView.adapter = taskAdapter
-    }
-
-    private fun openCreateTaskDialog() {
-        val createPartyDialog = CreateTaskDialog()
-        createPartyDialog.show(supportFragmentManager, "create dialog")
-    }
-
-    private fun openDeleteTaskDialog(task: Task) {
-        val deleteTaskDialog = DeleteTaskDialog(task)
-        deleteTaskDialog.show(supportFragmentManager, "delete dialog")
     }
 
     override fun saveNewTask(task: Task) {
@@ -141,14 +119,28 @@ class TaskActivity : AppCompatActivity(),
         moveToDetailsActivity(task)
     }
 
+    private fun setDataToRecyclerView(tasks: List<Task>) {
+        taskAdapter = TaskAdapter(tasks)
+        taskAdapter.setItemClickListener(this)
+        mRecyclerView.adapter = taskAdapter
+    }
+
+    private fun openCreateTaskDialog() {
+        val createPartyDialog = CreateTaskDialog()
+        createPartyDialog.show(supportFragmentManager, "create dialog")
+    }
+
+    private fun openDeleteTaskDialog(task: Task) {
+        val deleteTaskDialog = DeleteTaskDialog(task)
+        deleteTaskDialog.show(supportFragmentManager, "delete dialog")
+    }
+
     private fun moveToDetailsActivity(task: Task) {
         val intent = Intent(this@TaskActivity, DetailActivity::class.java)
-
         intent.putExtra("title", task.getTitle())
         intent.putExtra("description", task.getDescription())
         intent.putExtra("timestamp", task.getTimestamp())
         intent.putExtra("state", task.getState())
-
         startActivity(intent)
     }
 }

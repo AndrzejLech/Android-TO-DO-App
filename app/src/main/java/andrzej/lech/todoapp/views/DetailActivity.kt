@@ -13,18 +13,18 @@ class DetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_details)
-
+        val state = intent.getBooleanExtra("state", true)
         val returnButton: Button = findViewById(R.id.returnButton)
         findViewById<TextView>(R.id.detailsTitle).text = intent.getStringExtra("title")
         findViewById<TextView>(R.id.detailsDescription).text = intent.getStringExtra("description")
         findViewById<TextView>(R.id.detailsTimestamp).text = intent.getStringExtra("timestamp")
 
-        val state = intent.getBooleanExtra("state", true)
-
         if (state) {
-            findViewById<TextView>(R.id.detailsStatusValue).text = "done"
+            findViewById<TextView>(R.id.detailsStatusValue).text =
+                getString(R.string.details_status_value_done)
         } else {
-            findViewById<TextView>(R.id.detailsStatusValue).text = "not done"
+            findViewById<TextView>(R.id.detailsStatusValue).text =
+                getString(R.string.details_status_value_not_done)
         }
 
         returnButton.setOnClickListener {
@@ -32,7 +32,5 @@ class DetailActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
-
-
     }
 }

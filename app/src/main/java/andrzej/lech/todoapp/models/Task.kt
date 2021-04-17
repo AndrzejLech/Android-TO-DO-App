@@ -7,7 +7,6 @@ import java.util.concurrent.TimeUnit
 
 @Entity(tableName = "task_table")
 class Task(title: String, description: String) {
-
     @PrimaryKey(autoGenerate = true)
     private var uid: Int = 0
     private var title: String

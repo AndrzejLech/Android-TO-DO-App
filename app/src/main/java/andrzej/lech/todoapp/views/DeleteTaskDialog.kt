@@ -11,27 +11,26 @@ import andrzej.lech.todoapp.R
 import andrzej.lech.todoapp.models.Task
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
-class DeleteTaskDialog(var task: Task): AppCompatDialogFragment() {
+class DeleteTaskDialog(var task: Task) : AppCompatDialogFragment() {
     lateinit var mListener: DeleteTaskListener
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = MaterialAlertDialogBuilder(requireActivity())
         val inflater: LayoutInflater = activity!!.layoutInflater
         val view: View = inflater.inflate(R.layout.dialog_delete_task, null)
+        val mConfirmButton: Button = view.findViewById(R.id.deleteDialogConfirmButton)
+        val mDenyButton: Button = view.findViewById(R.id.deleteDialogDenyButton)
 
         builder.setView(view)
         builder.setCancelable(true)
         builder.setTitle(null)
 
-        val mConfirmButton: Button = view.findViewById(R.id.deleteDialogConfirmButton)
-        val mDenyButton: Button = view.findViewById(R.id.deleteDialogDenyButton)
-
-        mConfirmButton.setOnClickListener{
+        mConfirmButton.setOnClickListener {
             mListener.deleteTask(task)
             dismiss()
         }
 
-        mDenyButton.setOnClickListener{
+        mDenyButton.setOnClickListener {
             dismiss()
         }
 
@@ -44,7 +43,7 @@ class DeleteTaskDialog(var task: Task): AppCompatDialogFragment() {
         mListener = context as DeleteTaskListener
     }
 
-    interface DeleteTaskListener{
+    interface DeleteTaskListener {
         fun deleteTask(task: Task)
     }
 }

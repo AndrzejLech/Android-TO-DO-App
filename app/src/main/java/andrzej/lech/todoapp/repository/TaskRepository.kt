@@ -68,10 +68,9 @@ class TaskRepository(application: Application) {
             })
     }
 
-
     fun deleteTask(task: Task) {
         Completable.fromAction {
-              taskDao.delete(task)
+            taskDao.delete(task)
         }.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : CompletableObserver {

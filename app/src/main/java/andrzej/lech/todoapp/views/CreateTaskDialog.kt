@@ -13,6 +13,10 @@ import andrzej.lech.todoapp.R
 import andrzej.lech.todoapp.models.Task
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
+interface CreateTaskListener {
+    fun saveNewTask(task: Task)
+}
+
 class CreateTaskDialog : AppCompatDialogFragment() {
     lateinit var mTitle: EditText
     lateinit var mDescription: EditText
@@ -21,7 +25,6 @@ class CreateTaskDialog : AppCompatDialogFragment() {
 
     @NonNull
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-
         val builder = MaterialAlertDialogBuilder(requireActivity())
         val inflater: LayoutInflater = activity!!.layoutInflater
         val view: View = inflater.inflate(R.layout.dialog_create_task, null)
@@ -35,14 +38,14 @@ class CreateTaskDialog : AppCompatDialogFragment() {
         mSaveButton = view.findViewById(R.id.dialogCreateTaskSaveButton)
 
         mSaveButton.setOnClickListener {
-                val taskTitle = mTitle.text.toString()
-                val taskDescription = mDescription.text.toString()
+            val taskTitle = mTitle.text.toString()
+            val taskDescription = mDescription.text.toString()
 
-                if (taskDescription.isNotEmpty() && taskTitle.isNotEmpty()) {
-                    val task: Task = Task(taskTitle, taskDescription)
-                    mListener.saveNewTask(task)
-                    dismiss()
-                }
+            if (taskDescription.isNotEmpty() && taskTitle.isNotEmpty()) {
+                val task = Task(taskTitle, taskDescription)
+                mListener.saveNewTask(task)
+                dismiss()
+            }
         }
 
         return builder.create()
@@ -52,9 +55,4 @@ class CreateTaskDialog : AppCompatDialogFragment() {
         super.onAttach(context)
         mListener = context as CreateTaskListener
     }
-
-    interface CreateTaskListener {
-        fun saveNewTask(task: Task)
-    }
-
 }

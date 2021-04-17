@@ -30,5 +30,4 @@ class TaskActivityViewModel(@NonNull application: Application) : AndroidViewMode
     fun updateTask(task: Task) {
         return taskRepository.updateTask(task)
     }
-
 }

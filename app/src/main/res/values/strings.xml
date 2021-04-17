@@ -18,4 +18,9 @@
     <string name="task_delete_dialog_no_button">No</string>
     <string name="task_delete_dialog_text_1">This task isn\'t completed yet.</string>
     <string name="task_delete_dialog_text_2">Are you sure you want to delete it?</string>
+
+    <string name="details_status_value_done">done</string>
+    <string name="details_status_value_not_done">not done</string>
+
+    <string name="details_return_button">←</string>
 </resources>
