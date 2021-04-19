@@ -33,7 +33,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#FFFFFF"
-                android:hint="@string/task_create_dialog_title_hint" />
+                android:hint="@string/task_create_dialog_title_hint"
+                android:maxLines="2"
+                android:minLines="1" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
