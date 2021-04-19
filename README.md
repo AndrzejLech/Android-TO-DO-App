@@ -20,4 +20,4 @@ Create task dialog lets you type in title of your task and also description.
 
 It show when you are trying to delete task that is not done.
 
-![Delete Dialog](/images/delete_not_done_task_dialog.png ){width=50%}
+![Delete Dialog](/images/delete_not_done_task_dialog.png )
